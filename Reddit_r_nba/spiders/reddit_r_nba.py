@@ -25,7 +25,7 @@ class RedditRNbaSpider(CrawlSpider):
     	
     	for selector in selector_list:
     		item = RedditRNbaItem()
-    		item['title'] = selector.xpath('div/p/a/text()').extract()
+    		item['title'] = selector.xpath('div/p[1]/a/text()').extract()
     		# tested xpath selectors with scrapy shell until it returned just the authors
     		# when using the shell, put // in front of div to actually get it to return
     		# the author, but in the code, don't put //, because it is in a for loop, searching
