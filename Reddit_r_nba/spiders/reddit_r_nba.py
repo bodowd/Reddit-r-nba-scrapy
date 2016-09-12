@@ -7,7 +7,7 @@ from Reddit_r_nba.items import RedditRNbaItem
 
 class RedditRNbaSpider(CrawlSpider):
     name = "reddit_r_nba"
-    allowed_domains = ["reddit.com"]
+    allowed_domains = ["www.reddit.com"]
     start_urls = (
         'http://www.reddit.com/r/nba',
     )
@@ -19,12 +19,16 @@ class RedditRNbaSpider(CrawlSpider):
     		follow=True)
     ]
 
-    def parse(self, response):
+    def parse_item(self, response):
 
     	selector_list = response.css('div.thing')
     	
     	for selector in selector_list:
     		item = RedditRNbaItem()
     		item['title'] = selector.xpath('div/p/a/text()').extract()
-    		
+    		# tested xpath selectors with scrapy shell until it returned just the authors
+    		# when using the shell, put // in front of div to actually get it to return
+    		# the author, but in the code, don't put //, because it is in a for loop, searching
+    		# each item in selector_list (I think)
+    		item['author'] = selector.xpath('div[2]/p[2]/a/text()').extract()
     		yield item
